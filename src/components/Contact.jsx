@@ -37,19 +37,19 @@ const Contact = () => {
           className="bg-[#ff2a2a] w-full md:w-[85%] lg:w-[75%] p-8 md:p-16 text-white flex flex-col justify-between"
         >
           <div className="text-xs font-bold tracking-[0.2em] mb-12 md:mb-20 uppercase opacity-90">
-            Reach Us
+            Reach Me
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-12 md:gap-16 w-full">
             <div className="flex flex-col md:flex-row gap-12 md:gap-20 w-full">
               {/* Left Column */}
-              <div className="flex-1 flex flex-col gap-10">
+              <div className="flex-1 flex flex-col gap-10 px-3 py-2 ">
                 <div className="relative">
                   <input 
                     type="text" 
                     id="firstName" 
                     placeholder="First Name" 
-                    className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-white transition-colors placeholder-white font-medium rounded-none"
+                    className="w-full bg-transparent border-b  border-white/40 pb-3 text-lg  focus:outline-none focus:border-white transition-colors placeholder-white font-medium rounded-none"
                   />
                 </div>
                 <div className="relative">
@@ -116,6 +116,7 @@ const Contact = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </button>
+                  
                 </div>
               </div>
             </div>

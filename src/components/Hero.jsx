@@ -49,10 +49,9 @@ const Hero = () => {
         <div className="flex flex-col items-start text-left max-w-2xl w-full">
           {/* Main Heading */}
           <h1 data-aos="fade-up" className="text-white text-3xl md:text-5xl font-bold mb-4 tracking-tight" >
-            Hi, I'm an{" "} <span className=" text-red-600  text-3xl md:text-5xl font-bold mb-4 tracking-tight" > Aspiring </span>{" "}
+            Hi, I'm an{" "} <span className=" text-blue-600  text-3xl md:text-5xl font-bold mb-4 tracking-tight" > Aspiring </span>{" "}
             <br />
-            <br />
-            <span className="text-transparent [-webkit-text-stroke:1.5px_red] py-px "> AI Engineer</span>
+            <span className="text-red-600 [-webkit-text-stroke:1.5px_red]  "> AI Engineer</span>
             <br />
           </h1>
 
