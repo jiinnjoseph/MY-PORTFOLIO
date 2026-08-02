@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import RAGim from '../assets/works/RAGimg.png';
 import cloneimg from '../assets/works/Cloneimg.png';
-import Roadassist from '../assets/works/Roadassist.png';
+import Roadassist from '../assets/works/roadassist.png';
 import Atelierim from '../assets/works/architect.png';
 import hotelsearch from '../assets/works/hotelsearch.png';
 import edfly from '../assets/works/edfly.png';
