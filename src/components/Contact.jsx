@@ -16,7 +16,10 @@ const Contact = () => {
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "30%"]);
 
   return (
-    <section ref={ref} id="contact" className="bg-[#0a0a0a] w-full min-h-screen relative overflow-hidden flex items-end pt-32 pb-0 md:pb-0 border-t border-gray-900">
+    <section ref={ref} id="contact" className="bg-black w-full min-h-screen relative overflow-hidden flex items-end pt-32 pb-0 md:pb-0 border-t border-white/5">
+
+      {/* Ambient glow */}
+      <div className="crystal-ambient top-1/4 right-0 w-80 h-80 bg-[#ff2a2a]/15" aria-hidden="true" />
       {/* Huge Background Text */}
       <motion.div 
         style={{ y }}
@@ -34,7 +37,7 @@ const Contact = () => {
       <div className="relative z-10 w-full flex justify-end items-end">
         <div 
           data-aos="fade-up"
-          className="bg-[#ff2a2a] w-full md:w-[85%] lg:w-[75%] p-8 md:p-16 text-white flex flex-col justify-between"
+          className="crystal crystal-accent w-full md:w-[85%] lg:w-[75%] p-8 md:p-16 text-white flex flex-col justify-between"
         >
           <div className="text-xs font-bold tracking-[0.2em] mb-12 md:mb-20 uppercase opacity-90">
             Reach Me

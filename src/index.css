@@ -1,12 +1,36 @@
 @import "tailwindcss";
 
 @theme {
+  --color-accent: #ff2a2a;
+  --color-accent-soft: rgba(255, 42, 42, 0.15);
+  --color-accent-glow: rgba(255, 42, 42, 0.35);
+  --color-crystal-border: rgba(255, 255, 255, 0.12);
+  --color-crystal-border-light: rgba(255, 255, 255, 0.45);
+  --shadow-crystal: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --shadow-crystal-light: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --shadow-crystal-accent: 0 12px 40px rgba(255, 42, 42, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18);
   --animate-float: float 6s ease-in-out infinite;
+  --animate-crystal-shimmer: crystal-shimmer 8s ease-in-out infinite;
 
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-20px); }
   }
+
+  @keyframes crystal-shimmer {
+    0%, 100% { opacity: 0.4; transform: translateX(-10%) rotate(-2deg); }
+    50% { opacity: 0.7; transform: translateX(10%) rotate(-2deg); }
+  }
+}
+
+html, body, #root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Prevents any transformed/rotated child from ever creating scroll */
+body {
+  position: relative;
 }
 
 html {
@@ -18,6 +42,114 @@ body {
   padding: 0;
   background-color: #000;
   color: #fff;
+}
+
+/* ── Crystal base ── */
+.crystal {
+  position: relative;
+  isolation: isolate;
+}
+
+.crystal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.04) 35%,
+    transparent 55%,
+    rgba(255, 42, 42, 0.06) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.crystal::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+  animation: var(--animate-crystal-shimmer);
+}
+
+.crystal > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dark crystal — Hero, About, Navbar, Footer, dark CTAs */
+.crystal-dark {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--color-crystal-border);
+  box-shadow: var(--shadow-crystal), 0 0 60px rgba(255, 42, 42, 0.06);
+}
+
+/* Light crystal — Services, Works on light backgrounds */
+.crystal-light {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-crystal-border-light);
+  box-shadow: var(--shadow-crystal-light);
+}
+
+.crystal-light::before {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.3) 40%,
+    transparent 60%,
+    rgba(255, 42, 42, 0.04) 100%
+  );
+}
+
+/* Accent crystal — Contact form, active highlights */
+.crystal-accent {
+  background: rgba(255, 42, 42, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: var(--shadow-crystal-accent);
+}
+
+.crystal-accent::before {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.05) 45%,
+    transparent 70%
+  );
+}
+
+/* Compact crystal pill / button */
+.crystal-pill {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Ambient glow orbs for dark sections */
+.crystal-ambient {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
 }
 
 [data-aos="drop-bounce"] {

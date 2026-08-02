@@ -171,7 +171,7 @@ const Services = () => {
         </svg>
 
         {/* Cards Container */}
-        <div className="flex flex-col gap-8 md:gap-12 items-center md:block relative z-10 w-full pt-4 md:pt-0 pb-12 md:pb-0">
+        <div className="relative overflow-x-clip">
           
           <TagCard 
             number="01"

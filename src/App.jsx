@@ -5,7 +5,7 @@ import About from './components/About'
 import Services from './components/Services'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import Works from './components/Works'
+import Projects from './components/Projects'
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
       <Hero />
       <About />
       <Services />
-      <Works />
+      <Projects />
       <Contact />
       <Footer />
     </>

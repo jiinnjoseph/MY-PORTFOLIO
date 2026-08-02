@@ -1,13 +1,20 @@
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-// Adjusted import path for the video
-import heroVideo from '../assets/hero video/video.mp4';
+import Introvid from '../assets/hero video/intro.mp4';
 
 const Hero = () => {
+  const sectionRef = useRef(null);
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  // Raw cursor position, smoothed with a spring so the glow trails naturally
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
+  const glowX = useSpring(cursorX, { stiffness: 100, damping: 30, mass: 0.3 });
+  const glowY = useSpring(cursorY, { stiffness: 100, damping: 30, mass: 0.3 });
+  const maskPosition = useMotionTemplate`${glowX}px ${glowY}px`;
 
   useEffect(() => {
     AOS.init({
@@ -16,52 +23,134 @@ const Hero = () => {
     });
   }, []);
 
-  const toggleVideo = (e) => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsPlaying(true);
-      } else {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
+  useEffect(() => {
+    const video = videoRef.current;
+    setIsPlaying(false);
+    if (!video) return;
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => setIsPlaying(false);
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('ended', handleEnded);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('ended', handleEnded);
+    };
+  }, []);
+
+  const handleMouseMove = (e) => {
+    if (!sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    cursorX.set(e.clientX - rect.left);
+    cursorY.set(e.clientY - rect.top);
+  };
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+
+    if (!video) return;
+
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
     }
   };
 
   return (
-    <section id="home" className="relative w-screen h-screen overflow-hidden bg-black right-0">
-      {/* Background Video */}
-      <video
-        ref={videoRef}
-        muted={isMuted}
-        autoPlay
-        playsInline
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-[55%] h-[60%] object-contain z-0"
+    <section
+      id="home"
+      ref={sectionRef}
+      onMouseMove={handleMouseMove}
+      className="relative w-full min-h-screen overflow-hidden bg-black">
+      {/* Red glow that follows the cursor — tight and subtle */}
+      <motion.div
+        className="pointer-events-none absolute z-10 w-16 h-16 rounded-full bg-[#ff2a2a]/30 blur-[30px]"
+        style={{
+          left: glowX,
+          top: glowY,
+          translateX: '-50%',
+          translateY: '-50%',
+        }}
+      />
+
+
+      {/* Portrait */}
+      <motion.div
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute right-0 top-1/2 -translate-y-1/2 w-[50%] max-w-[700px] h-[85%] flex items-end justify-center"
       >
-        <source src={heroVideo} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+        {/* Soft radial fade so the portrait's own background dissolves into the section's black, no colored glow behind it */}
+        <div
+          className="absolute inset-0 pointer-events-none z-10" ></div>
+
+        <video
+          ref={videoRef}
+          src={Introvid}
+          playsInline
+          className="h-[80%] w-auto object-contain object-right relative rounded-lg "
+        >
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Play / Pause control */}
+        <button
+          type="button"
+          onClick={togglePlay}
+          aria-label={isPlaying ? 'Pause intro video' : 'Play intro video'}
+          className="absolute bottom-4 right-30  z-20 flex items-center justify-center px-4 py-3 rounded-full md:w-18 md:h-12 rounded-full crystal bg-red-600 text-white hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300"
+        >
+          {isPlaying ? (
+            <svg
+              className="w-4 h-4 md:w-5 md:h-5"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <rect x="6" y="5" width="4" height="14" rx="1" />
+              <rect x="14" y="5" width="4" height="14" rx="1" />
+            </svg>
+          ) : (
+            <svg
+              className="w-4 h-4 md:w-5 md:h-5 translate-x-[1px] default-transition"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          )}
+        </button>
+      </motion.div>
 
       {/* Content Container */}
-      <div className="absolute inset-0 z-20 px-6 pb-20 md:pb-[8%] md:px-12 max-w-7xl mx-auto flex flex-col md:flex-row justify-end md:justify-between items-start md:items-end text-left w-full">
+      <div className="absolute inset-0 z-20 px-6 pb-20 md:pb-[8%] md:px-12 max-w-7xl mx-auto flex flex-col md:flex-row justify-end md:justify-between items-start md:items-end text-left w-full pointer-events-none">
 
         {/* Left Side: Text and Buttons */}
-        <div className="flex flex-col items-start text-left max-w-2xl w-full">
+        <div className="flex flex-col items-start text-left max-w-2xl w-full pointer-events-auto">
           {/* Main Heading */}
-          <h1 data-aos="fade-up" className="text-white text-3xl md:text-5xl font-bold mb-4 tracking-tight" >
-            Hi, I'm an{" "} <span className=" text-blue-600  text-3xl md:text-5xl font-bold mb-4 tracking-tight" > Aspiring </span>{" "}
+          <h1 data-aos="fade-up" className="text-white text-3xl md:text-5xl font-bold mb-4 tracking-tight">
+            Hi, I'm an{" "}
+            <span className="text-[#ff2a2a] text-3xl md:text-5xl font-bold mb-4 tracking-tight">
+              Aspiring
+            </span>{" "}
             <br />
-            <span className="text-red-600 [-webkit-text-stroke:1.5px_red]  "> AI Engineer</span>
+            <span className="text-white [-webkit-text-stroke:1.5px_#ff2a2a]">AI Engineer</span>
             <br />
           </h1>
 
-          {/* Subheading */} 
+          {/* Subheading */}
           <p
             data-aos="fade-up"
             data-aos-delay="200"
-            className="text-white text-sm md:text-lg font-semibold mb-8 max-w-md drop-shadow-md"
+            className="text-white/70 text-sm md:text-lg font-semibold mb-8 max-w-md drop-shadow-md"
           >
-            I build fast, scalable and modern web applications and Gen AI Application using  React, AI models and Agents .
+            I build fast, scalable and modern web applications and Gen AI Application using React, AI models and Agents.
           </p>
 
           {/* Buttons */}
@@ -71,40 +160,15 @@ const Hero = () => {
             className="flex flex-row flex-wrap items-center gap-3 w-full"
           >
             {/* Primary Button */}
-            <a href="#projects" className="px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full bg-red-600 text-white font-semibold hover:bg-white  hover:text-red-600 transition-all duration-300 transform hover:scale-105 shadow-md">
+            <a href="#projects" className="px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full bg-[#ff2a2a] text-white font-semibold hover:bg-white hover:text-[#ff2a2a] transition-all duration-300 transform hover:scale-105 shadow-[0_10px_25px_rgba(255,42,42,0.35)]">
               View My Work
             </a>
 
-            {/* Secondary Button - Glassmorphism style */}
-            <a href="#contact" className="px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full bg-black/40 border border-white text-white font-semibold hover:bg-white hover:text-black hover:border-transparent transition-all duration-300 backdrop-blur-md">
+            {/* Secondary Button - Glassmorphism style, matches crystal-dark cards */}
+            <a href="#contact" className=" px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full text-white font-semibold border border-white hover:bg-white hover:text-red-600 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300">
               Contact Me
             </a>
           </div>
-        </div>
-
-        {/* Right Side: Play Video Button */}
-        <div
-          data-aos="zoom-in"
-          data-aos-delay="600"
-          className="mt-8 md:mt-0 flex flex-row md:flex-col items-center gap-2 md:gap-3 cursor-pointer group self-start md:self-auto"
-          onClick={toggleVideo}
-        >
-          <div className="w-12 h-12 md:w-20 md:h-20 rounded-full border border-white/30 bg-black/20 backdrop-blur-md flex justify-center items-center group-hover:scale-110 group-hover:bg-[#ff2a2a] transition-all duration-500 shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_40px_rgba(255,42,42,0.6)]">
-            {!isPlaying || isMuted ? (
-              // Play Icon
-              <svg className="w-5 h-5 md:w-8 md:h-8 text-white ml-0.5 md:ml-1" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            ) : (
-              // Pause Icon
-              <svg className="w-5 h-5 md:w-8 md:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-              </svg>
-            )}
-          </div>
-          <span className="text-white text-[10px] md:text-xs font-bold tracking-widest uppercase opacity-70 group-hover:opacity-100 transition-opacity">
-            {!isPlaying || isMuted ? "Play Reel" : "Pause"}
-          </span>
         </div>
       </div>
 
@@ -116,7 +180,7 @@ const Hero = () => {
       >
         <div className="animate-bounce">
           <svg
-            className="w-6 h-6 text-black drop-shadow-[0_1px_2px_rgba(255,255,255,0.6)]"
+            className="w-6 h-6 text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
