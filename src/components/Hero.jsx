@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Introvid from '../assets/hero video/intro.mp4';
+import Introvid from '../assets/hero video/Intro.mp4';
 
 const Hero = () => {
   const sectionRef = useRef(null);
