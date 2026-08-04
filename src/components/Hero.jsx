@@ -119,7 +119,7 @@ const Hero = () => {
           type="button"
           onClick={togglePlay}
           aria-label={isPlaying ? 'Pause intro video' : 'Play intro video'}
-          className="absolute bottom-4 right-30 z-20 flex items-center justify-center px-4 py-3 rounded-full md:w-18 md:h-12 crystal bg-red-600 text-white hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300"
+          className="absolute bottom-2 right-35 z-20 flex items-center justify-center px-4 py-3 rounded-full md:w-18 md:h-12 crystal bg-red-600 text-white hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300"
         >
           {isPlaying ? (
             <svg
@@ -141,6 +141,7 @@ const Hero = () => {
           )}
         </button>
       </motion.div>
+      
 
       {/* Content Container */}
       <div className="absolute inset-0 z-20 px-6 pb-20 md:pb-[8%] md:px-12 max-w-7xl mx-auto flex flex-col md:flex-row justify-end md:justify-between items-start md:items-end text-left w-full pointer-events-none">

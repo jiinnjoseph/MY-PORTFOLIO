@@ -4,9 +4,9 @@ import stackImage from '../assets/about/me.png';
 import reactImage from '../assets/about/react.png';
 import langchain from '../assets/about/langchain.png';
 import qdrant from '../assets/about/qdrant.png';
-import resume from '../assets/documents/resume.pdf';
 
 
+const resume = "/resume.pdf";
 const About = () => {
   const [isFlipping, setIsFlipping] = useState(false);
 
