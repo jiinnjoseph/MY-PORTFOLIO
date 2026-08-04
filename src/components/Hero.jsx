@@ -8,6 +8,8 @@ const Hero = () => {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isLooping, setIsLooping] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
 
   // Raw cursor position, smoothed with a spring so the grid glow trails naturally
   const cursorX = useMotionValue(0);
@@ -25,7 +27,6 @@ const Hero = () => {
 
   useEffect(() => {
     const video = videoRef.current;
-    setIsPlaying(false);
     if (!video) return;
 
     const handlePlay = () => setIsPlaying(true);
@@ -34,6 +35,15 @@ const Hero = () => {
     video.addEventListener('play', handlePlay);
     video.addEventListener('pause', handlePause);
     video.addEventListener('ended', handleEnded);
+
+
+    video.load();
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        setIsPlaying(false);
+      });
+    }
 
     return () => {
       video.removeEventListener('play', handlePlay);
@@ -58,6 +68,25 @@ const Hero = () => {
       video.play();
     } else {
       video.pause();
+    }
+  };
+
+  const toggleLoop = () => {
+    setIsLooping((prev) => !prev);
+  };
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Toggling here is a real user gesture, so the browser will allow
+    // audio to actually start — this is the only reliable way to get
+    // sound on a video that had to autoplay muted.
+    video.muted = !video.muted;
+    setIsMuted(video.muted);
+
+    if (!video.muted && video.paused) {
+      video.play();
     }
   };
 
@@ -109,39 +138,86 @@ const Hero = () => {
           ref={videoRef}
           src={Introvid}
           playsInline
+          preload="auto"
+          loop={isLooping}
           className="h-[80%] w-auto object-contain object-right relative rounded-lg"
         >
           Your browser does not support the video tag.
         </video>
 
-        {/* Play / Pause control */}
-        <button
-          type="button"
-          onClick={togglePlay}
-          aria-label={isPlaying ? 'Pause intro video' : 'Play intro video'}
-          className="absolute bottom-2 right-35 z-20 flex items-center justify-center px-4 py-3 rounded-full md:w-18 md:h-12 crystal bg-red-600 text-white hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300"
-        >
-          {isPlaying ? (
-            <svg
-              className="w-4 h-4 md:w-5 md:h-5"
-              viewBox="0 0 24 24"
-              fill="currentColor"
+        <div>
+          <div className="absolute bottom-2 right-35 z-20 flex flex-col items-center gap-2">
+            {/* Play / Pause control */}
+            <button
+              type="button"
+              onClick={togglePlay}
+              aria-label={isPlaying ? 'Pause intro video' : 'Play intro video'}
+              className="flex items-center right-15 top-14 justify-center px-4 py-3 rounded-full md:w-12 md:h-12 crystal bg-red-600 text-white hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300"
             >
-              <rect x="6" y="5" width="4" height="14" rx="1" />
-              <rect x="14" y="5" width="4" height="14" rx="1" />
-            </svg>
-          ) : (
-            <svg
-              className="w-4 h-4 md:w-5 md:h-5 translate-x-[1px] default-transition"
-              viewBox="0 0 24 24"
-              fill="currentColor"
+              {isPlaying ? (
+                <svg
+                  className="w-4 h-4 md:w-5 md:h-5"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <rect x="6" y="5" width="4" height="14" rx="1" />
+                  <rect x="14" y="5" width="4" height="14" rx="1" />
+                </svg>
+              ) : (
+                <svg
+                  className="w-4 h-4 md:w-5 md:h-5 translate-x-[1px] default-transition"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleMute}
+              aria-label={isMuted ? 'Unmute intro video' : 'Mute intro video'}
+              aria-pressed={!isMuted}
+              className={`flex items-center justify-center px-4 py-3 rounded-full md:w-12 md:h-12 crystal transition-all duration-300 ${!isMuted
+                  ? 'bg-red-600 text-white hover:shadow-[0_0_20px_rgba(255,42,42,0.3)]'
+                  : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
             >
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          )}
-        </button>
+              {isMuted ? (
+                <svg
+                  className="w-4 h-4 md:w-5 md:h-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none" />
+                  <line x1="23" y1="9" x2="17" y2="15" />
+                  <line x1="17" y1="9" x2="23" y2="15" />
+                </svg>
+              ) : (
+                <svg
+                  className="w-4 h-4 md:w-5 md:h-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none" />
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
       </motion.div>
-      
+
 
       {/* Content Container */}
       <div className="absolute inset-0 z-20 px-6 pb-20 md:pb-[8%] md:px-12 max-w-7xl mx-auto flex flex-col md:flex-row justify-end md:justify-between items-start md:items-end text-left w-full pointer-events-none">
