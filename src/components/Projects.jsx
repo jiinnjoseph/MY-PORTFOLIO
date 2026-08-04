@@ -132,13 +132,16 @@ const ProjectCard = ({ project, index, isSplit }) => {
         top: isSplit ? 'auto' : 0,
         left: isSplit ? 'auto' : 0,
         width: isSplit ? 'auto' : '100%',
+        willChange: 'transform',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`crystal group relative flex flex-col rounded-3xl p-1 transition-shadow duration-700 hover:-translate-y-1 ${
-        isHovered
-          ? 'crystal-accent shadow-[0_25px_60px_rgba(255,42,42,0.35)]'
-          : 'crystal-light hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]'
+      className={`group relative flex flex-col rounded-3xl p-1 transition-shadow duration-700 hover:-translate-y-1 ${
+        isSplit || index === 0
+          ? isHovered
+            ? 'crystal crystal-accent shadow-[0_25px_60px_rgba(255,42,42,0.35)]'
+            : 'crystal crystal-light hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]'
+          : 'bg-gray-50 border border-gray-200 shadow-[0_10px_30px_rgba(0,0,0,0.08)]'
       }`}
     >
       {/* Hole punch detail */}
@@ -162,9 +165,10 @@ const ProjectCard = ({ project, index, isSplit }) => {
 
         {/* Hover overlay with quick links */}
         <div
-          className={`absolute inset-0 flex items-center justify-center gap-4 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${
-            isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          className={`absolute inset-0 flex items-center justify-center gap-4 bg-black/60 backdrop-blur-sm transition-transform duration-500 origin-center ${
+            isHovered ? 'scale-100' : 'scale-0 pointer-events-none'
           }`}
+          style={{ willChange: 'transform' }}
         >
           <a
             href={project.live}
