@@ -26,7 +26,7 @@ const About = () => {
     <section id="about" className="relative z-0 w-full overflow-hidden font-sans px-4 md:px-8 pt-16 pb-48 md:pb-52 bg-gradient-to-b from-black via-[#ff2a2a]/10 to-white">
 
       {/* Ambient red glow — matches Hero/Contact accent treatment */}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-red-300 to-transparent pointer-events-none z-0" />
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-red-300/20 to-transparent pointer-events-none z-0" />
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#ff2a2a]/25 rounded-full blur-[120px] pointer-events-none" aria-hidden="true" />
       <div className="absolute bottom-20 left-0 w-72 h-72 bg-[#ff2a2a]/15 rounded-full blur-[100px] pointer-events-none" aria-hidden="true" />
 
@@ -35,9 +35,15 @@ const About = () => {
         <div className="flex flex-col md:flex-row gap-16 items-start">
 
           {/* Left Side: ID Badge and Skills */}
-          <div className="flex flex-col items-center w-full md:w-87.5 shrink-0 mt-12 md:mt-0 pb-28">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col items-center w-full md:w-87.5 shrink-0 mt-12 md:mt-0 pb-28"
+          >
 
-            <div data-aos="drop-bounce" className="relative flex justify-center w-full" style={{ perspective: '1200px' }}>
+            <div className="relative flex justify-center w-full" style={{ perspective: '1200px' }}>
               <div
                 role="button"
                 tabIndex={0}
@@ -99,28 +105,37 @@ const About = () => {
                 </svg>
 
                 {/* Label — starting point of the dotted arrow */}
-                <span
-                  data-aos="fade-up"
-                  data-aos-delay="500"
-                  className="absolute left-2 top-full mt-25 w-32 text-xl text-black font-['Caveat',cursive] bold italic leading-snug rotate-[-4deg] select-none"
+                <motion.span
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="absolute left-2 top-full mt-25 w-32 text-xl text-white/90 font-['Caveat',cursive] bold italic leading-snug rotate-[-4deg] select-none drop-shadow-md"
                 >
                   click my id to see resume
-                </span>
+                </motion.span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Side: Info Content */}
-          <div id="skills" data-aos="fade-left" data-aos-delay="200" className="flex-1 text-white mt-8 md:mt-0">
+          <motion.div
+            id="skills"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.2 }}
+            className="flex-1 text-white mt-8 md:mt-0"
+          >
 
             <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
               About <span className="text-[#ff2a2a]">Me</span>
             </h2>
-            <p className="text-lg font-bold mb-6 leading-relaxed max-w-3xl text-white/80">
+            <p className="text-lg font-bold mb-6 leading-relaxed max-w-3xl text-white/85">
               I'm <span className="text-[#ff2a2a] text-xl font-black mx-1 tracking-wide uppercase">Jithin Joseph</span>, Software Developer and an aspiring AI Engineer focused on building intelligent, scalable AI applications that solve real-world problems. Combining software engineering expertise with modern AI technologies, I create innovative, high-performance solutions that deliver seamless user experiences and meaningful impact.
             </p>
 
-            <ul className="space-y-3 mb-8 text-sm md:text-base font-semibold text-white/75 max-w-2xl">
+            <ul className="space-y-3 mb-8 text-sm md:text-base font-semibold text-white/80 max-w-2xl">
               <li className="flex items-start gap-3">
                 <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[#ff2a2a] shrink-0 shadow-[0_0_8px_rgba(255,42,42,0.6)]"></span>
                 Building Intelligent AI Solutions using Generative AI, Retrieval-Augmented Generation (RAG), LLMs, and modern AI frameworks to solve real-world problems.
@@ -137,37 +152,41 @@ const About = () => {
 
             {/* Horizontal Skills Row */}
             <div className="flex items-center gap-6 mt-8">
-              <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white border border-white flex items-center justify-center hover:border-[#ff2a2a]/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+              <motion.div
+                whileHover={{ scale: 1.08, translateY: -4 }}
+                className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg hover:border-[#ff2a2a]/60 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300 cursor-pointer"
+              >
                 <img
-                  data-aos="zoom-in" data-aos-delay="300"
                   src={reactImage}
                   alt="React"
-                  className="w-14 h-14 md:w-16 md:h-16 object-contain"
+                  className="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow"
                 />
-              </div>
-              <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white border border-white/10 flex items-center justify-center hover:border-[#ff2a2a]/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.08, translateY: -4 }}
+                className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg hover:border-[#ff2a2a]/60 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300 cursor-pointer"
+              >
                 <img
-                  data-aos="zoom-in" data-aos-delay="450"
                   src={langchain}
                   alt="Langchain"
-                  className="w-14 h-14 md:w-16 md:h-16 object-contain bg-transparent"
+                  className="w-14 h-14 md:w-16 md:h-16 object-contain bg-transparent drop-shadow"
                 />
-              </div>
-              <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white border border-white/10 flex items-center justify-center hover:border-[#ff2a2a]/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.08, translateY: -4 }}
+                className="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg hover:border-[#ff2a2a]/60 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300 cursor-pointer"
+              >
                 <img
-                  data-aos="zoom-in" data-aos-delay="600"
                   src={qdrant}
                   alt="qdrant"
-                  className="w-14 h-14 md:w-16 md:h-16 object-contain"
+                  className="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow"
                 />
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
         <div
-          data-aos="fade-up"
-          data-aos-delay="800"
-          className="hidden md:block  absolute bottom-8 left-1/2 transform -translate-x-1/2 pointer-events-none"
+          className="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 pointer-events-none"
         >
           <div className="animate-bounce">
             <svg
@@ -185,7 +204,7 @@ const About = () => {
         </div>
       </div>
 
-      {/* Torn paper divider — sits at section edge, Services stacks above via z-index */}
+      {/* Flowing bottom SVG curve connecting into Services white background */}
       <div className="absolute bottom-0 left-0 w-full pointer-events-none z-20">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-12 md:h-20 fill-white block">
           <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.62,189.5,99.8,242.79,81.82,282.88,63.6,321.39,56.44Z"></path>

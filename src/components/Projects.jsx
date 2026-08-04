@@ -135,17 +135,18 @@ const ProjectCard = ({ project, index, isSplit }) => {
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`crystal group relative flex flex-col rounded-3xl p-1 transition-shadow duration-700 hover:-translate-y-1 ${isHovered
+      className={`crystal group relative flex flex-col rounded-3xl p-1 transition-shadow duration-700 hover:-translate-y-1 ${
+        isHovered
           ? 'crystal-accent shadow-[0_25px_60px_rgba(255,42,42,0.35)]'
           : 'crystal-light hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]'
-        }`}
+      }`}
     >
-      {/* Hole punch, same detail as Services TagCard */}
-      <div className="w-4 h-4 bg-linear-to-br from-gray-300 to-gray-100 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] absolute top-3 left-1/2 -translate-x-1/2 border border-gray-300 z-20 flex items-center justify-center">
+      {/* Hole punch detail */}
+      <div className="w-4 h-4 bg-gradient-to-br from-gray-300 to-gray-100 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] absolute top-3 left-1/2 -translate-x-1/2 border border-gray-300 z-20 flex items-center justify-center">
         <div className="w-1.5 h-1.5 bg-gray-800 rounded-full opacity-20"></div>
       </div>
 
-      {/* Media — height flexes with content, trimmed down from the original */}
+      {/* Media */}
       <div className="w-full h-44 mt-6 rounded-2xl overflow-hidden relative bg-gray-900 shrink-0">
         {project.image ? (
           <img
@@ -154,15 +155,16 @@ const ProjectCard = ({ project, index, isSplit }) => {
             className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-gray-800 to-black">
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-black">
             <span className="text-white/20 text-5xl font-black">{project.number}</span>
           </div>
         )}
 
         {/* Hover overlay with quick links */}
         <div
-          className={`absolute inset-0 flex items-center justify-center gap-4 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
+          className={`absolute inset-0 flex items-center justify-center gap-4 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${
+            isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
         >
           <a
             href={project.live}
@@ -193,41 +195,46 @@ const ProjectCard = ({ project, index, isSplit }) => {
         {/* Featured tag */}
         {project.featured && (
           <span
-            className={`absolute top-3 left-3 z-10 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full backdrop-blur-md ${isHovered ? 'bg-white text-[#ff2a2a]' : 'bg-black/60 text-white'
-              }`}
+            className={`absolute top-3 left-3 z-10 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full backdrop-blur-md ${
+              isHovered ? 'bg-white text-[#ff2a2a]' : 'bg-black/60 text-white'
+            }`}
           >
             Featured
           </span>
         )}
       </div>
 
-      {/* Body — no forced flex-1 height, card wraps its content */}
+      {/* Body */}
       <div className="flex flex-col p-5">
         <div className="flex items-center justify-between mb-2">
           <span
-            className={`text-sm font-bold font-serif italic transition-colors duration-700 ${isHovered ? 'text-red-200' : 'text-gray-400'
-              }`}
+            className={`text-sm font-bold font-serif italic transition-colors duration-700 ${
+              isHovered ? 'text-red-200' : 'text-gray-400'
+            }`}
           >
             {project.number}
           </span>
           <span
-            className={`text-[10px] font-bold uppercase tracking-widest transition-colors duration-700 ${isHovered ? 'text-red-100' : 'text-gray-400'
-              }`}
+            className={`text-[10px] font-bold uppercase tracking-widest transition-colors duration-700 ${
+              isHovered ? 'text-red-100' : 'text-gray-400'
+            }`}
           >
             {project.category} · {project.year}
           </span>
         </div>
 
         <h3
-          className={`text-xl font-black mb-2 tracking-tight transition-colors duration-700 ${isHovered ? 'text-white' : 'text-gray-900'
-            }`}
+          className={`text-xl font-black mb-2 tracking-tight transition-colors duration-700 ${
+            isHovered ? 'text-white' : 'text-gray-900'
+          }`}
         >
           {project.title}
         </h3>
 
         <p
-          className={`text-sm leading-relaxed font-medium mb-4 transition-colors duration-700 ${isHovered ? 'text-red-50' : 'text-gray-500'
-            }`}
+          className={`text-sm leading-relaxed font-medium mb-4 transition-colors duration-700 ${
+            isHovered ? 'text-red-50' : 'text-gray-500'
+          }`}
         >
           {project.description}
         </p>
@@ -237,10 +244,11 @@ const ProjectCard = ({ project, index, isSplit }) => {
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className={`text-[11px] font-bold px-3 py-1 rounded-full border transition-colors duration-700 ${isHovered
+              className={`text-[11px] font-bold px-3 py-1 rounded-full border transition-colors duration-700 ${
+                isHovered
                   ? 'border-white/30 text-white bg-white/10'
                   : 'border-gray-200 text-gray-600 bg-gray-50'
-                }`}
+              }`}
             >
               {tag}
             </span>
@@ -261,13 +269,8 @@ const Projects = () => {
   const filteredProjects =
     activeFilter === 'All'
       ? PROJECTS
-      : PROJECTS.filter((p) => p.category === activeFilter);
+      : PROJECTS.filter((p) => p.category.trim() === activeFilter.trim());
 
-  // Scroll-triggered split: once the stack scrolls into view, spread the
-  // cards automatically. The manual click/keyboard "spread the stack"
-  // interaction on the stack itself still works as a fallback/re-trigger —
-  // this observer only ever turns isSplit ON, it never restacks on scroll,
-  // so the "↺ Restack" button remains a purely manual action.
   useEffect(() => {
     const node = stackRef.current;
     if (!node) return;
@@ -287,13 +290,19 @@ const Projects = () => {
 
   return (
     <section
-      id="my-projects"
+      id="projects"
       ref={containerRef}
       className="bg-gray-300 pt-20 pb-40 px-6 md:px-12 w-full relative overflow-hidden font-sans"
     >
       <div className="max-w-6xl mx-auto relative">
         {/* Header */}
-        <div data-aos="fade-up" className="max-w-2xl mb-14 md:mb-20">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-2xl mb-14 md:mb-20"
+        >
           <div className="crystal crystal-light inline-block rounded-full px-5 py-1.5 text-sm text-gray-600 font-bold mb-8">
             My Works
           </div>
@@ -323,27 +332,30 @@ const Projects = () => {
             each one shipped, not just prototyped.
             {!isSplit && ' Tap the stack to spread it out.'}
           </p>
-        </div>
+        </motion.div>
 
         {/* Filters */}
-        <div
-          data-aos="fade-up"
-          data-aos-delay="150"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.1 }}
           className="flex flex-wrap items-center gap-3 mb-12 md:mb-16"
         >
           {FILTERS.map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
-              className={`relative px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeFilter === filter
+              className={`relative px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${
+                activeFilter === filter
                   ? 'bg-[#ff2a2a] text-white shadow-[0_10px_25px_rgba(255,42,42,0.35)]'
                   : 'crystal crystal-light text-gray-600 hover:text-gray-900'
-                }`}
+              }`}
             >
               {filter}
             </button>
           ))}
-        </div>
+        </motion.div>
 
         <div className="relative">
           <motion.div
@@ -399,9 +411,11 @@ const Projects = () => {
         </div>
 
         {/* Bottom CTA, mirrors Hero's button styling */}
-        <div
-          data-aos="fade-up"
-          data-aos-delay="200"
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="mt-14 flex flex-col md:flex-row items-center justify-between gap-8 crystal crystal-dark rounded-4xl p-10 md:p-14 relative overflow-hidden transition-all duration-700 hover:-translate-y-2"
         >
           <div className="absolute top-6 right-8 text-red-600 opacity-10">
@@ -423,10 +437,13 @@ const Projects = () => {
           >
             Let's Talk
           </a>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Torn paper divider, matches About.jsx */}
+      {/* Bottom gradient flow to next component (Contact - bg-black) */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent via-gray-400/30 to-black pointer-events-none z-20" />
+
+      {/* Torn paper divider into Contact */}
       <div className="absolute bottom-0 left-0 w-full pointer-events-none z-30 transform translate-y-1">
         <svg
           viewBox="0 0 1200 120"

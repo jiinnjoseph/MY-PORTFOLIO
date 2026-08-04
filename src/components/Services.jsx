@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion, useScroll, useSpring, useMotionValueEvent } from 'framer-motion';
 
-const TagCard = ({ number, title, text, className, aosDelay, aosType, pathLength, containerRef }) => {
+const TagCard = ({ number, title, text, className, pathLength, containerRef }) => {
   const ref = useRef(null);
   const [isActive, setIsActive] = useState(false);
 
@@ -26,16 +26,18 @@ const TagCard = ({ number, title, text, className, aosDelay, aosType, pathLength
   });
 
   return (
-    <div 
+    <motion.div 
       ref={ref}
-      data-aos={aosType || "fade-up"} 
-      data-aos-delay={aosDelay}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7 }}
       className={`w-72 sm:w-80 rounded-4xl p-2 relative flex flex-col items-center hover:scale-[1.02] transition-all duration-700 z-10 ${className} ${
         isActive ? 'bg-[#ff2a2a] border-red-400 shadow-[0_20px_50px_rgba(255,42,42,0.4)]' : 'bg-white border border-gray-200 shadow-[0_15px_40px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.12)]'
       }`}
     >
       {/* The hole punch */}
-      <div className="w-5 h-5 bg-linear-to-br from-gray-300 to-gray-100 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] absolute top-4 border border-gray-300 z-10 flex items-center justify-center">
+      <div className="w-5 h-5 bg-gradient-to-br from-gray-300 to-gray-100 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] absolute top-4 border border-gray-300 z-10 flex items-center justify-center">
         <div className="w-2 h-2 bg-gray-800 rounded-full opacity-20"></div>
       </div>
       
@@ -57,7 +59,7 @@ const TagCard = ({ number, title, text, className, aosDelay, aosType, pathLength
           {text}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -73,14 +75,20 @@ const Services = () => {
 
   return (
     <section 
-      id="projects"
+      id="services"
       ref={containerRef}
       className="bg-white pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[80px_80px]"
     >
       <div className="max-w-6xl mx-auto relative md:h-337.5">
         
         {/* Header Content */}
-        <div data-aos="fade-up" className="md:absolute top-10 left-0 md:w-112.5 z-20 mb-16 md:mb-0">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="md:absolute top-10 left-0 md:w-112.5 z-20 mb-16 md:mb-0"
+        >
           <div className="inline-block border border-gray-300 rounded-full px-5 py-1.5 text-sm text-gray-600 font-bold mb-8 shadow-sm bg-white">
             How we work
           </div>
@@ -95,7 +103,7 @@ const Services = () => {
           <p className="text-gray-500 text-base md:text-lg max-w-sm font-medium leading-relaxed">
             We follow a structured, creative, and highly technical approach to turn your ideas into robust full-stack applications.
           </p>
-        </div>
+        </motion.div>
 
         {/* Desktop SVG Animated Dashed Line */}
         <svg 
@@ -178,8 +186,6 @@ const Services = () => {
             title="Define"
             text="We start by understanding your goals, user requirements, and technical constraints to lay a rock-solid foundation for the project."
             className="md:absolute md:top-2.5 md:right-[5%] lg:right-[10%] rotate-2 md:rotate-6"
-            aosType="fade-left"
-            aosDelay="100"
             pathLength={pathLength}
             containerRef={containerRef}
           />
@@ -189,8 +195,6 @@ const Services = () => {
             title="Design"
             text="Creating intuitive, pixel-perfect user interfaces and wireframes that guarantee an engaging and accessible user experience."
             className="md:absolute md:top-112.5 md:left-[5%] lg:left-[10%] -rotate-2 md:-rotate-6"
-            aosType="fade-right"
-            aosDelay="200"
             pathLength={pathLength}
             containerRef={containerRef}
           />
@@ -200,8 +204,6 @@ const Services = () => {
             title="Build"
             text="Developing scalable frontend architectures and secure backend systems using the latest modern tech stack."
             className="md:absolute md:top-175 md:right-[5%] lg:right-[15%] rotate-1 md:rotate-3"
-            aosType="fade-left"
-            aosDelay="300"
             pathLength={pathLength}
             containerRef={containerRef}
           />
@@ -211,24 +213,27 @@ const Services = () => {
             title="Launch"
             text="Rigorous testing, optimization, and seamless deployment to cloud infrastructure, followed by ongoing support."
             className="md:absolute md:top-262.5 md:left-[15%] lg:left-[25%] -rotate-1 md:-rotate-3"
-            aosType="fade-right"
-            aosDelay="400"
             pathLength={pathLength}
             containerRef={containerRef}
           />
 
           {/* Hand-drawn end text */}
-          <div 
-            data-aos="fade-in" 
-            data-aos-delay="600"
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.5 }}
             className="hidden md:block absolute top-312.5 left-[60%] font-['Caveat',cursive] text-3xl text-gray-600 rotate-6"
           >
             Ready to be delivered!
-          </div>
+          </motion.div>
 
         </div>
 
       </div>
+
+      {/* Bottom gradient transition connecting Services (white) to Projects (bg-gray-300) */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent via-gray-200/60 to-gray-300 pointer-events-none z-20" />
     </section>
   );
 };

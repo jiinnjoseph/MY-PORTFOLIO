@@ -9,6 +9,7 @@ const Navbar = () => {
     { label: 'Home', href: '#home', id: 'home' },
     { label: 'About', href: '#about', id: 'about' },
     { label: 'Skills', href: '#skills', id: 'skills' },
+    { label: 'Services', href: '#services', id: 'services' },
     { label: 'Projects', href: '#projects', id: 'projects' },
     { label: 'Contact', href: '#contact', id: 'contact' },
   ];
@@ -22,7 +23,6 @@ const Navbar = () => {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
 
   useEffect(() => {
     const sections = navLinks
@@ -40,8 +40,7 @@ const Navbar = () => {
         });
       },
       {
-        // Trigger when a section occupies the middle band of the viewport
-        rootMargin: '-40% 0px -50% 0px',
+        rootMargin: '-30% 0px -40% 0px',
         threshold: 0,
       }
     );
@@ -50,18 +49,22 @@ const Navbar = () => {
     return () => sections.forEach((section) => observer.unobserve(section));
   }, []);
 
-  const textColorBase = isScrolled ? 'text-black/80' : 'text-white/80';
-  const textColorHover = isScrolled ? 'hover:text-black' : 'hover:text-white';
-  const logoColor = isScrolled ? 'text-black' : 'text-white';
-  const hamburgerColor = isScrolled ? 'text-black' : 'text-white';
+  const isLightSection = activeSection === 'services' || activeSection === 'projects';
+
+  const textColorBase = isLightSection ? 'text-gray-700' : 'text-white/70';
+  const textColorHover = isLightSection ? 'hover:text-black' : 'hover:text-white';
+  const logoColor = isLightSection ? 'text-black' : 'text-white';
+  const hamburgerColor = isLightSection ? 'text-black' : 'text-white';
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         isOpen
           ? 'bg-[#ff2a2a]/95 backdrop-blur-xl py-4 shadow-[0_4px_30px_rgba(255,42,42,0.3)]'
           : isScrolled
-            ? 'bg-transparent backdrop-blur-xl border-b border-black/5 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)]'
+            ? isLightSection
+              ? 'bg-white/80 backdrop-blur-xl border-b border-gray-200 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.06)]'
+              : 'bg-black/40 backdrop-blur-xl border-b border-white/10 py-4 shadow-[0_4px_25px_rgba(0,0,0,0.5)]'
             : 'bg-transparent py-6'
       }`}
     >
@@ -87,18 +90,17 @@ const Navbar = () => {
               <a
                 key={link.label}
                 href={link.href}
-                className={`font-medium relative group transition-colors duration-300 ${
+                className={`font-semibold relative group transition-colors duration-300 ${
                   isActive
-                    ? (isScrolled ? 'text-black' : 'text-white')
+                    ? (isLightSection ? 'text-black font-bold' : 'text-white font-bold')
                     : `${textColorBase} ${textColorHover}`
                 }`}
               >
                 {link.label}
-                {/* Underline: full width + red when active section matches,
-                    otherwise slides in from left on hover */}
+                {/* Underline: full width + red when active section matches */}
                 <span
                   className={`absolute -bottom-1 left-0 h-0.5 bg-red-500 transition-all duration-300 ${
-                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    isActive ? 'w-full shadow-[0_0_8px_rgba(255,42,42,0.8)]' : 'w-0 group-hover:w-full'
                   }`}
                 ></span>
               </a>
@@ -110,10 +112,10 @@ const Navbar = () => {
         <div className="hidden md:block">
           <a
             href="#contact"
-            className={`px-6 py-2.5 bg-grey-200 rounded-full  border border-red-600  font-semibold transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,42,42,0.25)] ${
-              isScrolled
-                ? 'text-black hover:bg-black/10'
-                : 'text-white hover:bg-white/15'
+            className={`px-6 py-2.5 rounded-full border border-red-600 font-semibold transition-all duration-300 shadow-[0_0_15px_rgba(255,42,42,0.2)] hover:shadow-[0_0_25px_rgba(255,42,42,0.5)] ${
+              isLightSection
+                ? 'text-black bg-red-500/10 hover:bg-red-600 hover:text-white'
+                : 'text-white bg-red-600/20 hover:bg-red-600 hover:text-white'
             }`}
           >
             Hire Me

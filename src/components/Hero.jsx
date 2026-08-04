@@ -9,12 +9,12 @@ const Hero = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
 
-  // Raw cursor position, smoothed with a spring so the glow trails naturally
+  // Raw cursor position, smoothed with a spring so the grid glow trails naturally
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
   const glowX = useSpring(cursorX, { stiffness: 100, damping: 30, mass: 0.3 });
   const glowY = useSpring(cursorY, { stiffness: 100, damping: 30, mass: 0.3 });
-  const maskPosition = useMotionTemplate`${glowX}px ${glowY}px`;
+  const gridMask = useMotionTemplate`radial-gradient(260px circle at ${glowX}px ${glowY}px, black 0%, transparent 75%)`;
 
   useEffect(() => {
     AOS.init({
@@ -31,7 +31,6 @@ const Hero = () => {
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
     const handleEnded = () => setIsPlaying(false);
-
     video.addEventListener('play', handlePlay);
     video.addEventListener('pause', handlePause);
     video.addEventListener('ended', handleEnded);
@@ -67,35 +66,50 @@ const Hero = () => {
       id="home"
       ref={sectionRef}
       onMouseMove={handleMouseMove}
-      className="relative w-full min-h-screen overflow-hidden bg-black">
-      {/* Red glow that follows the cursor — tight and subtle */}
-      <motion.div
-        className="pointer-events-none absolute z-10 w-16 h-16 rounded-full bg-[#ff2a2a]/30 blur-[30px]"
+      className="relative w-full min-h-screen overflow-hidden bg-gradient-to-b from-black via-[#0d0408] to-black"
+    >
+      {/* Ambient background glow gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-[#ff2a2a]/20 via-transparent to-transparent pointer-events-none z-0" />
+
+      {/* Base grid — faint, always visible */}
+      <div
+        className="pointer-events-none absolute inset-0 z-10 opacity-[0.15]"
         style={{
-          left: glowX,
-          top: glowY,
-          translateX: '-50%',
-          translateY: '-50%',
+          backgroundImage:
+            'linear-gradient(to right, rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.15) 1px, transparent 1px)',
+          backgroundSize: '30px 30px',
+        }}
+      />
+
+      {/* Bright grid, revealed only inside a radial spotlight that follows the cursor */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-10"
+        style={{
+          backgroundImage:
+            'linear-gradient(to right, rgba(255,42,42,0.9) 0.5px, transparent 1px), linear-gradient(to bottom, rgba(255,42,42,0.9) 1px, transparent 1px)',
+          backgroundSize: '30px 30px',
+          WebkitMaskImage: gridMask,
+          maskImage: gridMask,
         }}
       />
 
 
       {/* Portrait */}
       <motion.div
-        initial={{ opacity: 0, x: 40 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ opacity: 0, x: 50, scale: 0.95 }}
+        whileInView={{ opacity: 1, x: 0, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         className="absolute right-0 top-1/2 -translate-y-1/2 w-[50%] max-w-[700px] h-[85%] flex items-end justify-center"
       >
-        {/* Soft radial fade so the portrait's own background dissolves into the section's black, no colored glow behind it */}
-        <div
-          className="absolute inset-0 pointer-events-none z-10" ></div>
+        {/* Soft radial fade so the portrait's own background dissolves into the section's black */}
+        <div className="absolute inset-0 pointer-events-none z-10"></div>
 
         <video
           ref={videoRef}
           src={Introvid}
           playsInline
-          className="h-[80%] w-auto object-contain object-right relative rounded-lg "
+          className="h-[80%] w-auto object-contain object-right relative rounded-lg"
         >
           Your browser does not support the video tag.
         </video>
@@ -105,7 +119,7 @@ const Hero = () => {
           type="button"
           onClick={togglePlay}
           aria-label={isPlaying ? 'Pause intro video' : 'Play intro video'}
-          className="absolute bottom-4 right-30  z-20 flex items-center justify-center px-4 py-3 rounded-full md:w-18 md:h-12 rounded-full crystal bg-red-600 text-white hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300"
+          className="absolute bottom-4 right-30 z-20 flex items-center justify-center px-4 py-3 rounded-full md:w-18 md:h-12 crystal bg-red-600 text-white hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300"
         >
           {isPlaying ? (
             <svg
@@ -132,12 +146,18 @@ const Hero = () => {
       <div className="absolute inset-0 z-20 px-6 pb-20 md:pb-[8%] md:px-12 max-w-7xl mx-auto flex flex-col md:flex-row justify-end md:justify-between items-start md:items-end text-left w-full pointer-events-none">
 
         {/* Left Side: Text and Buttons */}
-        <div className="flex flex-col items-start text-left max-w-2xl w-full pointer-events-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, delay: 0.2 }}
+          className="flex flex-col items-start text-left max-w-2xl w-full pointer-events-auto"
+        >
           {/* Main Heading */}
-          <h1 data-aos="fade-up" className="text-white text-3xl md:text-5xl font-bold mb-4 tracking-tight">
+          <h1 className="text-white text-3xl md:text-5xl font-bold mb-4 tracking-tight">
             Hi, I'm an{" "}
             <span className="text-[#ff2a2a] text-3xl md:text-5xl font-bold mb-4 tracking-tight">
-              Aspiring
+              aspiring
             </span>{" "}
             <br />
             <span className="text-white [-webkit-text-stroke:1.5px_#ff2a2a]">AI Engineer</span>
@@ -145,31 +165,23 @@ const Hero = () => {
           </h1>
 
           {/* Subheading */}
-          <p
-            data-aos="fade-up"
-            data-aos-delay="200"
-            className="text-white/70 text-sm md:text-lg font-semibold mb-8 max-w-md drop-shadow-md"
-          >
-            I build fast, scalable and modern web applications and Gen AI Application using React, AI models and Agents.
+          <p className="text-white/70 text-sm md:text-lg font-semibold mb-8 max-w-md drop-shadow-md">
+            I build fast, scalable and modern web applications and Gen AI Applications using React, AI models and Agents.
           </p>
 
           {/* Buttons */}
-          <div
-            data-aos="fade-up"
-            data-aos-delay="400"
-            className="flex flex-row flex-wrap items-center gap-3 w-full"
-          >
+          <div className="flex flex-row flex-wrap items-center gap-3 w-full">
             {/* Primary Button */}
             <a href="#projects" className="px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full bg-[#ff2a2a] text-white font-semibold hover:bg-white hover:text-[#ff2a2a] transition-all duration-300 transform hover:scale-105 shadow-[0_10px_25px_rgba(255,42,42,0.35)]">
               View My Work
             </a>
 
-            {/* Secondary Button - Glassmorphism style, matches crystal-dark cards */}
-            <a href="#contact" className=" px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full text-white font-semibold border border-white hover:bg-white hover:text-red-600 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300">
+            {/* Secondary Button - Glassmorphism style */}
+            <a href="#contact" className="px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full text-white font-semibold border border-white hover:bg-white hover:text-red-600 hover:shadow-[0_0_20px_rgba(255,42,42,0.3)] transition-all duration-300">
               Contact Me
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Scroll Indicator */}
@@ -192,6 +204,8 @@ const Hero = () => {
           </svg>
         </div>
       </div>
+      {/* Bottom gradient flow to next component (About - black top) */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent via-black/80 to-black pointer-events-none z-20" />
     </section>
   );
 };
