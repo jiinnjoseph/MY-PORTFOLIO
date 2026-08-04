@@ -13,13 +13,9 @@ const About = () => {
   const handleCardClick = (e) => {
     e.preventDefault();
     if (isFlipping) return;
-    setIsFlipping(true);
-  };
-
-  const handleFlipComplete = () => {
-    if (!isFlipping) return;
     window.open(resume, '_blank', 'noopener,noreferrer');
     setIsFlipping(true);
+
   };
 
   return (
@@ -61,7 +57,7 @@ const About = () => {
                 <motion.div
                   animate={{ rotateY: isFlipping ? 360 : 0 }}
                   transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  onAnimationComplete={handleFlipComplete}
+                  onAnimationComplete={handleCardClick}
                   style={{ transformStyle: 'preserve-3d' }}
                   className="w-full max-w-70 rounded-2xl p-3 bg-[#141414] border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5),0_0_30px_rgba(255,42,42,0.12)] relative z-20 -rotate-3 hover:rotate-0 hover:border-[#ff2a2a]/40 transition-[transform,border-color] duration-500"
                 >
