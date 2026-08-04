@@ -19,7 +19,7 @@ const About = () => {
   const handleFlipComplete = () => {
     if (!isFlipping) return;
     window.open(resume, '_blank', 'noopener,noreferrer');
-    setIsFlipping(false);
+    setIsFlipping(true);
   };
 
   return (
