@@ -138,7 +138,7 @@ const Hero = () => {
           ref={videoRef}
           src={Introvid}
           playsInline
-          autopaly
+          autoplay
           muted={isMuted}
           preload="auto"
           loop={isLooping}
