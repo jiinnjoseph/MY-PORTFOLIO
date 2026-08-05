@@ -22,7 +22,7 @@ const PROJECTS = [
     tags: ['LangChain', 'Qdrant', 'Python', 'OpenAI API', 'YOLO', 'Groq'],
     image: RAGim,
     github: 'https://github.com/jiinnjoseph/MULTI-MODAL-RAG',
-    live: 'https://multi-modal-rag-frrjmpq4raur3bdq7vynzb.streamlit.app/',
+    live: 'https://multi-modal-rag-xz.streamlit.app',
     featured: false,
   },
   {
