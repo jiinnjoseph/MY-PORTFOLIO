@@ -51,7 +51,7 @@ const About = () => {
                 {/* Lanyard string */}
                 <div className="absolute -top-32 left-1/2 w-3 h-40 bg-white transform -translate-x-1/2 shadow-inner z-0"></div>
                 {/* Lanyard clip */}
-                <div className="absolute -top-6 left-1/2 w-6 h-12 bg-gray-300 rounded border border-gray-400 transform -translate-x-1/2 z-10 shadow-[0_2px_10px_rgba(0,0,0,0.3)]"></div>
+                <div className="absolute -top-6 left-1/2 w-6 h-12 bg-gray-300 rounded border border-red-500 transform -translate-x-1/2 z-10 shadow-[0_2px_10px_rgba(0,0,0,0.3)]"></div>
 
                 {/* Badge Card — solid panel, no glass, flips on click */}
                 <motion.div
@@ -106,7 +106,7 @@ const About = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.4 }}
-                  className="absolute left-2 top-full mt-25 w-32 text-xl text-white/90 font-['Caveat',cursive] bold italic leading-snug rotate-[-4deg] select-none drop-shadow-md"
+                  className="absolute left-2 top-full mt-25 w-32 text-xl text-black font-['Caveat',cursive] bold italic leading-snug rotate-[-4deg] select-none drop-shadow-md"
                 >
                   click my id to see resume
                 </motion.span>

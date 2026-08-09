@@ -100,7 +100,7 @@ const SkillCard = ({ group, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.7, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative crystal crystal-light rounded-3xl p-1 flex flex-col hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all duration-700"
+      className="group relative bg-transperant rounded-3xl p-1 flex flex-col hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:bg-[#ff2a2a] transition-colours duration-700"
     >
       {/* Hole punch detail — matches ProjectCard / TagCard motif */}
       <div className="w-4 h-4 bg-gradient-to-br from-gray-300 to-gray-100 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] absolute top-3 left-1/2 -translate-x-1/2 border border-gray-300 z-10 flex items-center justify-center">
