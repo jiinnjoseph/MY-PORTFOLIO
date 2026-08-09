@@ -8,8 +8,8 @@ const Navbar = () => {
   const navLinks = [
     { label: 'Home', href: '#home', id: 'home' },
     { label: 'About', href: '#about', id: 'about' },
-    { label: 'Skills', href: '#skills', id: 'skills' },
     { label: 'Services', href: '#services', id: 'services' },
+    { label: 'Skills', href: '#skills', id: 'skills' },
     { label: 'Projects', href: '#projects', id: 'projects' },
     { label: 'Contact', href: '#contact', id: 'contact' },
   ];
@@ -50,7 +50,6 @@ const Navbar = () => {
   }, []);
 
   const isLightSection = activeSection === 'services' || activeSection === 'projects';
-
   const textColorBase = isLightSection ? 'text-gray-700' : 'text-white/70';
   const textColorHover = isLightSection ? 'hover:text-black' : 'hover:text-white';
   const logoColor = isLightSection ? 'text-black' : 'text-white';
