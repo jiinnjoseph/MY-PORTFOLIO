@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Mail } from "lucide-react";
-import { FaGithub , FaLinkedin , FaInstagram } from "react-icons/fa";
+import { FaGithub , FaLinkedin ,FaInstagram } from "react-icons/fa";
 
 
 const Medialinks = [
